@@ -69,6 +69,16 @@ describe 'Line'
             line.c.should.be 0    
         end
         
+        it 'should create a straight line with equation \"y = 0.5\" if points are (0,0.5) and (1,0.5)'
+            point1 = new Point(0,0.5);
+	        point2 = new Point(1,0.5);
+	        line = new Line(point1, point2);
+            
+            line.a.should.be 0
+            line.b.should.be 1     
+            line.c.should.be -0.5    
+        end
+        
     end
     
     describe '.has(point)'
@@ -94,6 +104,14 @@ describe 'Line'
             line.has(point).should.be false
         end
     
+    end
+    
+    describe '.is_between(point_limit1, point_limit2, point)'
+        
+       it 'should be tested'
+       
+       end 
+        
     end
     
   
@@ -143,24 +161,58 @@ describe 'Fence'
             square = new Fence(points)
         end
        
-        it 'should answer an array with 0 elements when lines are paralels'
-            line1 = new Line("0,0", "1,1")
-            line2 = new Line("0,1", "1,2")
-            points = square.compute_points_belong_to_both_lines(line1, line2)
-            points.length.should.be 0
+        it 'should answer an invalid point when lines are paralels'
+            p1 = new Point(0,0);
+	        p2 = new Point(1,1);
+	        p3 = new Point(0,1);
+	        p4 = new Point(1,2);
+            line1 = new Line(p1, p2)
+            line2 = new Line(p3, p4)
+            point = square.compute_points_belong_to_both_lines(line1, line2)
+            point.valid.should.be false
         end
         
-        it 'should answer an array with 0 elements when lines are the same'
-            line1 = new Line("0,0", "1,1")
-            points = square.compute_points_belong_to_both_lines(line1, line1)
-            points.length.should.be 0
+        it 'should answer an invalid point when lines are the same'
+            p1 = new Point(0,0);
+	        p2 = new Point(1,1);
+            line = new Line(p1, p2)
+            point = square.compute_points_belong_to_both_lines(line, line)
+            point.valid.should.be false
         end
         
-        it 'should answer an array with 1 element when lines are concurrent'
-            line1 = new Line("0,0", "1,1")
-            line2 = new Line("10,1", "12,2")
-            points = square.compute_points_belong_to_both_lines(line1, line2)
-            points.length.should.be 1
+        it 'should answer a valid point when lines are concurrent'
+            p1 = new Point(0,0);
+	        p2 = new Point(1,1);
+	        p3 = new Point(10,1);
+	        p4 = new Point(12,2);
+            line1 = new Line(p1, p2)
+            line2 = new Line(p3, p4)
+            point = square.compute_points_belong_to_both_lines(line1, line2)
+            point.valid.should.be true
+        end
+        
+        it 'should answer (0.5,0.5) if line1 is formed by (0,0);(1,1) and line2 is formed by (0,1);(1,0)'
+            p1 = new Point(0,0);
+	        p2 = new Point(1,1);
+	        p3 = new Point(0,1);
+	        p4 = new Point(1,0);
+            line1 = new Line(p1, p2)
+            line2 = new Line(p3, p4)
+            point = square.compute_points_belong_to_both_lines(line1, line2)
+            point.x.should.be 0.5
+            point.y.should.be 0.5
+        end
+        
+        it 'should answer (0.5,0.5) if line1 is formed by (0,0.5);(1,0.5) and line2 is formed by (0.5,0);(0.5,1)'
+            p1 = new Point(0,0.5);
+	        p2 = new Point(1,0.5);
+	        p3 = new Point(0.5,0);
+	        p4 = new Point(0.5,1);
+            line1 = new Line(p1, p2)
+            line2 = new Line(p3, p4)
+            point = square.compute_points_belong_to_both_lines(line1, line2)
+            point.x.should.be 0.5
+            point.y.should.be 0.5
         end
     end
 

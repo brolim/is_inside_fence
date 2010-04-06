@@ -1,7 +1,7 @@
 
 load('./spec/lib/jspec.js')
 load('./spec/lib/jspec.xhr.js')
-load('lib/yourlib.js')
+load('lib/fence.js')
 load('spec/unit/spec.helper.js')
 
 JSpec
